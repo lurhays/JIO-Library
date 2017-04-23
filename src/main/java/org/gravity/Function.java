@@ -12,8 +12,10 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -91,7 +93,7 @@ public static void fileCreate(String fileName, String fileExt, String Destinatio
 public static void fileDel(String fileName, String fileExt, String Destination){
 	
 	try{
-		 
+
 		File fileDelete = new File(Destination+fileName+"."+fileExt);
 
 		if(fileDelete.delete()){
@@ -122,7 +124,7 @@ public static void fileDel(String fileName, String fileExt, String Destination){
 public static void fileCheck(String fileName, String fileExt, String Destination){
 	
 	try{
-		 
+
 		File file = new File(Destination+fileName+"."+fileExt);
 
 		if(file.exists()){
@@ -196,12 +198,12 @@ public static void fileChangExtMulti(String fileExt, String NewfileExt, String D
 			if(folderArray[x].getName().endsWith(fileExt)==true){
 				if (index>0&& index <= folderArray[x].getName().length() - 2 ) {
 					File fileToRename = new File(Destination+folderArray[x].getName().substring(0, index)+"."+fileExt);
-		    		File NewfileToRename = new File(Destination+folderArray[x].getName().substring(0, index)+"."+NewfileExt);
-		    		fileToRename.renameTo(NewfileToRename);
-		    		System.out.println(folderArray[x].getName().substring(0, index)+" : Converted from "+'"'+"."+fileExt+'"'+ " to "+'"'+"."+NewfileExt+'"');
+					File NewfileToRename = new File(Destination+folderArray[x].getName().substring(0, index)+"."+NewfileExt);
+					fileToRename.renameTo(NewfileToRename);
+					System.out.println(folderArray[x].getName().substring(0, index)+" : Converted from "+'"'+"."+fileExt+'"'+ " to "+'"'+"."+NewfileExt+'"');
 				}
 				
-				}else{
+			}else{
 				System.out.println("No file with extension "+fileExt+" found");
 			}
 		}
@@ -210,7 +212,7 @@ public static void fileChangExtMulti(String fileExt, String NewfileExt, String D
 		e.printStackTrace();
 
 	}	
-    System.out.println("Conversion process completed.");
+	System.out.println("Conversion process completed.");
 }
 /**
  * Function name: copyFile
@@ -236,7 +238,7 @@ public static void copyFile(String fileName, String fileExt, String Path, String
 		byte[] buf = new byte[1024];
 		int len;
 		while ((len = in.read(buf)) > 0) {
-		   out.write(buf, 0, len);
+			out.write(buf, 0, len);
 		}
 		in.close();
 		out.close();
@@ -261,18 +263,18 @@ public static void copyFile(String fileName, String fileExt, String Path, String
  */
 public static void moveFile(String fileName, String fileExt, String Path, String Destination){
 	try{
-		 
-    	   File afile =new File(Path+fileName+"."+fileExt);
 
-    	   if(afile.renameTo(new File(Destination + afile.getName()))){
-    		System.out.println("File is moved successful!");
-    	   }else{
-    		System.out.println("File is failed to move!");
-    	   }
+		File afile =new File(Path+fileName+"."+fileExt);
 
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}
+		if(afile.renameTo(new File(Destination + afile.getName()))){
+			System.out.println("File is moved successful!");
+		}else{
+			System.out.println("File is failed to move!");
+		}
+
+	}catch(Exception e){
+		e.printStackTrace();
+	}
 }	
 /**
  * Function name: moveFolder
@@ -288,43 +290,43 @@ public static void moveFile(String fileName, String fileExt, String Path, String
  * function.moveFolder("C://test1", "C://test2/");
  */		 
 public static void moveFolder(String srcDir, String destDir) throws IOException{
-   File srcFileFolder = new File(srcDir);
-   File destFileFolder = new File (destDir);	
-   copyFolderActual (srcFileFolder, destFileFolder);
+	File srcFileFolder = new File(srcDir);
+	File destFileFolder = new File (destDir);	
+	copyFolderActual (srcFileFolder, destFileFolder);
    deleteFolder(srcDir); //Eliminate dependencies between copy & delete
-    }
+}
 public static void copyFolderActual(File src, File dest)throws IOException{
- if(src.isDirectory()){
+	if(src.isDirectory()){
  //Check destination, if invalid then create one
- if(!dest.exists()){
- dest.mkdir();
- System.out.println("Executed: Folder moved from "+ src + ", copy to " + dest);
- }
+		if(!dest.exists()){
+			dest.mkdir();
+			System.out.println("Executed: Folder moved from "+ src + ", copy to " + dest);
+		}
  //list all the directory contents
- String files[] = src.list();
- for (String file : files) {
+		String files[] = src.list();
+		for (String file : files) {
  //Constructor to defined source and destination structure
- File srcFile = new File(src, file);
- File destFile = new File(dest, file);
+			File srcFile = new File(src, file);
+			File destFile = new File(dest, file);
  //Copy recursively
- copyFolderActual(srcFile,destFile);
- 	}
- }
- else{
+			copyFolderActual(srcFile,destFile);
+		}
+	}
+	else{
  //Byte stream method to support all type of file
- InputStream in = new FileInputStream(src);
- OutputStream out = new FileOutputStream(dest); 	        
- byte[] buffer = new byte[1024];
- int length;      
+		InputStream in = new FileInputStream(src);
+		OutputStream out = new FileOutputStream(dest); 	        
+		byte[] buffer = new byte[1024];
+		int length;      
  //Copy all file in bytes translation 
- while ((length = in.read(buffer)) > 0){
- out.write(buffer, 0, length);
-   }	        
+		while ((length = in.read(buffer)) > 0){
+			out.write(buffer, 0, length);
+		}	        
    //Close the input & output stream
-   in.close();
-   out.close();
-  System.out.println("Executed: File Moved from " + src + " to " + dest);
-   	}
+		in.close();
+		out.close();
+		System.out.println("Executed: File Moved from " + src + " to " + dest);
+	}
   //deleteFolder(src.toString());  ////Commenting out, Eliminate dependecies between copy & delete
 }	
 /**
@@ -341,47 +343,47 @@ public static void copyFolderActual(File src, File dest)throws IOException{
  * Function.copyAllFiles("C://test1", "C://test2/");
  */
 public static void copyAllFiles(String srcDir, String destDir) throws IOException{
-    	File srcFileFolder = new File(srcDir);
-    	File destFileFolder = new File (destDir);	
-    	copyAllFileActual (srcFileFolder, destFileFolder);
-    }
+	File srcFileFolder = new File(srcDir);
+	File destFileFolder = new File (destDir);	
+	copyAllFileActual (srcFileFolder, destFileFolder);
+}
 public static void copyAllFileActual(File src, File dest)throws IOException{
 
-    	if(src.isDirectory()){
-    		
+	if(src.isDirectory()){
+
     		//Check destination, if invalid then create one
-    		if(!dest.exists()){
-    		   dest.mkdir();
-    		   System.out.println("Executed: Folder moved from "+ src + ", copy to " + dest);
-    		}
+		if(!dest.exists()){
+			dest.mkdir();
+			System.out.println("Executed: Folder moved from "+ src + ", copy to " + dest);
+		}
 
     		//list all the directory contents
-    		String files[] = src.list();
-    		for (String file : files) {
+		String files[] = src.list();
+		for (String file : files) {
     		   //Constructor to defined source and destination structure
-    		   File srcFile = new File(src, file);
-    		   File destFile = new File(dest, file);
+			File srcFile = new File(src, file);
+			File destFile = new File(dest, file);
     		   //Copy recursively
-    		   copyFolderActual(srcFile,destFile);
-    		}
-    	}
-    	else{
+			copyFolderActual(srcFile,destFile);
+		}
+	}
+	else{
     		//Bytes stream method to support all type of file
-    		InputStream in = new FileInputStream(src);
-    	    OutputStream out = new FileOutputStream(dest); 
-    	    byte[] buffer = new byte[1024];
-    	    int length;
-    	        
+		InputStream in = new FileInputStream(src);
+		OutputStream out = new FileOutputStream(dest); 
+		byte[] buffer = new byte[1024];
+		int length;
+
     	    //Copy all file in bytes translation 
-    	    while ((length = in.read(buffer)) > 0){
-    	    out.write(buffer, 0, length);
-    	    }
-    	        
+		while ((length = in.read(buffer)) > 0){
+			out.write(buffer, 0, length);
+		}
+
     	    //Close the input & output stream
-    	    in.close();
-    	    out.close();
-    	    System.out.println("Executed: Copy all files from " + src + " to " + dest);
-    	}
+		in.close();
+		out.close();
+		System.out.println("Executed: Copy all files from " + src + " to " + dest);
+	}
 }	   
 /**
  * Function name: deleteFolder
@@ -396,95 +398,175 @@ public static void copyAllFileActual(File src, File dest)throws IOException{
  * Function.deleteFolder("C://test1");
  */   
 public static void deleteFolder(String srcDir){
-    	File deleteFolder = new File (srcDir);
-    	if(deleteFolder.exists())
-        {
-            do{
-                delete(deleteFolder);
-            }while(deleteFolder.exists());
-        }else
-        {
-            System.out.println("Error!: Folder not found: "+srcDir);
-        }
+	File deleteFolder = new File (srcDir);
+	if(deleteFolder.exists())
+	{
+		do{
+			delete(deleteFolder);
+		}while(deleteFolder.exists());
+	}else
+	{
+		System.out.println("Error!: Folder not found: "+srcDir);
 	}
+}
 private static void delete(File dir){
-    if(dir.isDirectory())
-        {
-    	String fileList[] = dir.list();
-    	if(fileList.length == 0)
-    	{
-    		System.out.println("Executed: Folder "+dir.getPath()+" deleted.");
-            dir.delete();
-            }
-    	else{
-    		int size = fileList.length;
-            for(int i = 0 ; i < size ; i++)
-            {
-            	String fileName = fileList[i];
-                String fullPath = dir.getPath()+"/"+fileName;
-                File fileOrFolder = new File(fullPath);
-                delete(fileOrFolder);
-                }
-            }
-        }
-        else{
-            System.out.println("Executed: File "+dir.getPath()+" deleted.");
-            dir.delete();
-        }
-    }	
+	if(dir.isDirectory())
+	{
+		String fileList[] = dir.list();
+		if(fileList.length == 0)
+		{
+			System.out.println("Executed: Folder "+dir.getPath()+" deleted.");
+			dir.delete();
+		}
+		else{
+			int size = fileList.length;
+			for(int i = 0 ; i < size ; i++)
+			{
+				String fileName = fileList[i];
+				String fullPath = dir.getPath()+"/"+fileName;
+				File fileOrFolder = new File(fullPath);
+				delete(fileOrFolder);
+			}
+		}
+	}
+	else{
+		System.out.println("Executed: File "+dir.getPath()+" deleted.");
+		dir.delete();
+	}
+}	
+
 /**
- * Function name: zipFolder
+ * Function name: zipFolder 
  * 
  * <p>
- * Pointed folder will compressed into zip file and store in the same directory.
+ * this zip function performs what zip does. it is somehow deprecated but maintained so that it satisfy the unit test.
  * <p>
- * @param srcDir Folder directory to be zip.
+ * @param folderPath Source folder path to zip.
  * <p>
  * Example:
  * <p>
- * Function.zipFolder("C://test1");
+ * Function.zipFolder("C:/Work01");
+ */
+public static void zipFolder(String folderPath) throws Exception{
+	File destFolder = new File(folderPath+"..//zip");
+	//destFolder.
+	zip("",folderPath,destFolder.getPath());
+}
+
+/**
+ * Function name: zip
+ * 
+ * <p>
+ * This zip function covered both single file zipping and recursive files zipping. How this function differentiate when to zip file and when to zip folder
+ * are: If "srcFileName" provided, this function acknowledge this as zipping a single file request. If "srcFileName" is $null, this function will zip all
+ * the files existed in the provided "srcFolder".
+ * <p>
+ * @param srcFileName Single filename of the file to be zip.
+ * @param srcFolder Source folder path.
+ * @param destFolder Destination folder path.
+ * <p>
+ * Example:
+ * <p>
+ * Function.zip("file.txt", "C:/Work01/" , "C:/Work02/");
  */   
-public static void zipFolder(String srcDir) throws Exception {
-	String destZipFile = srcDir+".zip";
-	ZipOutputStream zip = null;
-    FileOutputStream writeOut = null;
-    //Declare output method
-    writeOut = new FileOutputStream(destZipFile);
-    zip = new ZipOutputStream(writeOut);
-    //Zipping execution
-    ZipFolder("", srcDir, zip);
-    zip.flush();
-    zip.close();
-    System.out.println("Executed: Folder "+srcDir+" compressed.");
-  }
-static private void ZipFolder(String path, String srcFolder, ZipOutputStream zip)throws Exception {
-	File folder = new File(srcFolder);
 
-	for (String fileName : folder.list()) {
-      if (path.equals("")) {
-    	  ZipFile(folder.getName(), srcFolder + "/" + fileName, zip);
-      } 
-      else{
-    	  ZipFile(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip);
-      }
-    }
-  } 
-static private void ZipFile(String path, String srcFile, ZipOutputStream zip)throws Exception {
+public static void zip(String srcFileName, String srcFolder , String destFolder) throws Exception {
+	
+	// 1. Define the source and destination as a constructor
+	File srcPath = new File(srcFolder);
+	File destPath = new File(destFolder);
+	String fullSrc = srcFolder+srcFileName;
+	String zipName = srcFileName.replaceFirst("[.][^.]+$", ""); 
+	
+	byte[] buffer = new byte[1024];
 
-    File folder = new File(srcFile);
-    if (folder.isDirectory()) {
-    	ZipFolder(path, srcFile, zip);
-    } 
-    else{
-      byte[] buf = new byte[1024];
-      int len;
-      FileInputStream in = new FileInputStream(srcFile);
-      zip.putNextEntry(new ZipEntry(path + "/" + folder.getName()));
-      while ((len = in.read(buf)) > 0) {
-        zip.write(buf, 0, len);
-      }
-    }
-  } 
+	try {
+		// 2. Condition to check the validity of the source and destination
+		if (srcPath.isDirectory() || destPath.isDirectory()){
+			
+			// 3. Do the folder zipping process
+			if (srcFileName.equals(null) ||srcFileName.isEmpty() ) {
+				
+				// 3.1 Get all files existed in the source folder
+				List<File> fileList = new ArrayList<File>();
+				File[] files = srcPath.listFiles();
+				
+				for (File file : files){ fileList.add(file); }
+
+				// 3.2 Zip the File Object
+					FileOutputStream outputStream = new FileOutputStream(srcPath.getName() + ".zip");
+				ZipOutputStream outputZip = new ZipOutputStream(outputStream);
+				
+				for (File file : fileList) {
+					if (!file.isDirectory()) { 
+
+						FileInputStream inputStream = new FileInputStream(file);
+						
+						String zipFilePath = file.getCanonicalPath().substring(srcPath.getCanonicalPath().length() + 1,
+							file.getCanonicalPath().length());
+						
+						System.out.println("Writing '" + zipFilePath + "' to zip file");
+						ZipEntry zipEntry = new ZipEntry(zipFilePath);
+						outputZip.putNextEntry(zipEntry);
+
+						byte[] bytes = new byte[1024];
+						int length;
+						
+						while ((length = inputStream.read(bytes)) >= 0) {
+							outputZip.write(bytes, 0, length);
+						}
+
+						outputZip.closeEntry();
+						inputStream.close();
+						
+					}
+				}
+				
+				outputZip.close();
+				outputStream.close();
+				
+				//3.3 Move zipped package to destination folder
+				File fileToMove = new File(srcPath.getName() + ".zip");
+				
+				if (fileToMove.renameTo(new File(destFolder+(srcPath.getName() + ".zip")))){
+
+					System.out.println("FUNCTION::ZIP:: Successfully zipping folder: "+(srcPath.getName() + ".zip")+", to location: "+destFolder+".");
+					
+				} else {
+					
+					System.out.println("FUNCTION::ZIP:: Unable to move zipping folder: "+(srcPath.getName() + ".zip")+", to location: "+destFolder+".");
+					
+				}
+				
+			} else { 
+				//4. Do the file zipping process
+				FileOutputStream outputStream = new FileOutputStream(destPath+"/"+zipName+".zip");
+				
+				ZipOutputStream outputZip = new ZipOutputStream(outputStream);
+				ZipEntry zipEntry = new ZipEntry(srcFileName);
+				outputZip.putNextEntry(zipEntry);
+				FileInputStream inputStream = new FileInputStream(fullSrc);
+				int len;
+				while ((len = inputStream.read(buffer)) > 0) {
+					outputZip.write(buffer, 0, len);
+				}
+
+				inputStream.close();
+				outputZip.closeEntry();
+				outputZip.close();
+				
+				System.out.println("FUNCTION::ZIP:: Successfully zipping file: "+srcPath+", to location: "+destFolder+".");
+				
+			} 
+		}
+
+	} catch(Exception ex) {
+		System.out.println("EXCEPTION::ZIP::" + ex);
+		
+	}
+}
+
+
 /**
  * Function name: unzipFolder
  * 
@@ -503,39 +585,39 @@ public static void unzipFolder( String srcDir, String destDir ) {
 		ZipFile zipfile = new ZipFile(srcDir);
 		Enumeration< ? extends ZipEntry> zipEnum = zipfile.entries();
 		
-			while( zipEnum.hasMoreElements() ) {
-				ZipEntry zipentry = (ZipEntry) zipEnum.nextElement();
+		while( zipEnum.hasMoreElements() ) {
+			ZipEntry zipentry = (ZipEntry) zipEnum.nextElement();
 
-				if (zipentry.isDirectory()) {
-					File newdir = new File(destDir + File.separator + zipentry.getName());
-					newdir.mkdir();
-				} 
-				else{
-					String extractPath = destDir + File.separator + zipentry.getName();
-					File extractFile = new File(extractPath);
-					if (!extractFile.getParentFile().exists()) {
-						extractFile.getParentFile().mkdirs();
-					}else{
-						System.out.println("Info: Folder and data "+'"'+zipentry.getName()+'"'+" already existed at extract location.");
-						System.out.println("Info: Replace existing content with new extract data.");
-					}
-        
-					InputStream input = zipfile.getInputStream(zipentry);
-					FileOutputStream output = new FileOutputStream(extractPath);
-					int x;
-					while( (x = input.read()) != -1 ) {
-						output.write(x);
-					}
-					input.close();
-					output.close();
+			if (zipentry.isDirectory()) {
+				File newdir = new File(destDir + File.separator + zipentry.getName());
+				newdir.mkdir();
+			} 
+			else{
+				String extractPath = destDir + File.separator + zipentry.getName();
+				File extractFile = new File(extractPath);
+				if (!extractFile.getParentFile().exists()) {
+					extractFile.getParentFile().mkdirs();
+				}else{
+					System.out.println("Info: Folder and data "+'"'+zipentry.getName()+'"'+" already existed at extract location.");
+					System.out.println("Info: Replace existing content with new extract data.");
 				}
+
+				InputStream input = zipfile.getInputStream(zipentry);
+				FileOutputStream output = new FileOutputStream(extractPath);
+				int x;
+				while( (x = input.read()) != -1 ) {
+					output.write(x);
+				}
+				input.close();
+				output.close();
 			}
-			zipfile.close();
-			System.out.println("Executed: Folder "+srcDir+" successfully extracted.");
-			System.out.println("Extract location: "+destDir);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		}
+		zipfile.close();
+		System.out.println("Executed: Folder "+srcDir+" successfully extracted.");
+		System.out.println("Extract location: "+destDir);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 }	
 /**
  * Function name: renameFile
@@ -555,10 +637,10 @@ public static void renameFile(String srcFileName, String newFileName, String Pat
 	File file1 = new File (Path+"/"+srcFileName);
 	File file2 = new File (Path+"/"+newFileName);
 	if(!file1.exists()){
-	System.out.println("Error!: File "+Path+"/"+srcFileName+" not found.");	
+		System.out.println("Error!: File "+Path+"/"+srcFileName+" not found.");	
 	}else{
-	file1.renameTo(file2);
-	System.out.println("Executed: File "+ '"'+srcFileName+'"'+" succesfully changed to "+'"'+newFileName+'"'+".");
+		file1.renameTo(file2);
+		System.out.println("Executed: File "+ '"'+srcFileName+'"'+" succesfully changed to "+'"'+newFileName+'"'+".");
 	}
 }
 
@@ -584,10 +666,10 @@ public static String interpretFlag(int input, String positiveMssg, String negati
 	String outputMsg;
 	
 	//Input checker
-		if (input !=0){
-			if (input !=1){
-				outputMsg = invalidMssg;
-			}else{
+	if (input !=0){
+		if (input !=1){
+			outputMsg = invalidMssg;
+		}else{
 		}
 	}
 	
@@ -601,7 +683,7 @@ public static String interpretFlag(int input, String positiveMssg, String negati
 	}	
 	return outputMsg;
 	
-	}
+}
 
 
 /**
@@ -651,27 +733,27 @@ public static void fileContentCompare(String filePath , String fileName1, String
 	String content1="", content2="";
 	BufferedReader bf1 = new BufferedReader(new FileReader(filePath+"/"+fileName1));
 	BufferedReader bf2 = new BufferedReader(new FileReader(filePath+"/"+fileName2));
-			
+
 		//Try to read the files content
-		try {
-			content1 = bf1.readLine();
-			content2 = bf2.readLine();
-			
-			if (content1.equals(content2)){
-				System.out.println("File Compare: There is no differences of contents between file "
-						+fileName1+" and "+fileName2+" .\n");
-				System.out.println("Content of file:\n"+content1);
-			}else{
-				System.out.println("File Compared: There is a differences in content between files "
-						+fileName1+" and "+fileName2+" .\n");
-				System.out.println("Content in file "+fileName1+" :\n"+content1);
-				System.out.println("Content in file "+fileName2+" :\n"+content2);
-			}
-				
-		} catch (IOException contentReadFail) {
+	try {
+		content1 = bf1.readLine();
+		content2 = bf2.readLine();
+
+		if (content1.equals(content2)){
+			System.out.println("File Compare: There is no differences of contents between file "
+				+fileName1+" and "+fileName2+" .\n");
+			System.out.println("Content of file:\n"+content1);
+		}else{
+			System.out.println("File Compared: There is a differences in content between files "
+				+fileName1+" and "+fileName2+" .\n");
+			System.out.println("Content in file "+fileName1+" :\n"+content1);
+			System.out.println("Content in file "+fileName2+" :\n"+content2);
+		}
+
+	} catch (IOException contentReadFail) {
 			// TODO Auto-generated catch block
-			contentReadFail.printStackTrace();
-		}					
+		contentReadFail.printStackTrace();
+	}					
 }
 
 
@@ -697,11 +779,11 @@ public static void contentLookupOnIndex(String filePath , String fileName, Strin
 		content = bf.readLine();
 		int index = content.indexOf(searchWord);
 		
-		 if (index==-1){
-			 System.out.println("Content Searching: Fail!...Content "+ lookupValues +" not found");
-		 }else{
-			 System.out.println("Content Searching: Content "+ lookupValues +" found at: " +index);
-		 }
+		if (index==-1){
+			System.out.println("Content Searching: Fail!...Content "+ lookupValues +" not found");
+		}else{
+			System.out.println("Content Searching: Content "+ lookupValues +" found at: " +index);
+		}
 		
 	} catch (IOException e) {
 		System.out.println("Process Error :");
@@ -710,7 +792,57 @@ public static void contentLookupOnIndex(String filePath , String fileName, Strin
 }
 
 
+/**
+ * Function name: listOut
+ * 
+ * <p>
+ * Do the either file or folder list lookup on the designated specified folder.
+ * </p>
+ * @param mode Lookup mode either "file" or "folder"
+ * @param srcPath Designated folder path to do lookup
+ */
+
+public static List<String> listOut(String mode , String srcPath) throws Exception {
+	
+	// 1. Define the source and destination as a constructor
+	File myPath = new File(srcPath);
+	List<String> myList = new  ArrayList<String>();
+	
+	try {
+		
+		if (mode.contentEquals("file")){
+			
+			//1. Do the file listing existed inside srcFolder
+			File[] myFile = myPath.listFiles();
+			for (File file : myFile){ 
+				if (file.isFile()){
+					myList.add(file.getName()); 
+				}
+			}
+			
+		} else if (mode.contentEquals("folder")){
+			
+			//2. Do the folder listing existed inside srcFolder
+			File[] myFile = myPath.listFiles();
+			
+			for (File file : myFile){ 				
+				if (file.isDirectory()){
+					myList.add(file.getName()); 
+				}
+			}
+			
+		} else {
+			
+			//3. Return an exception invalid mode input
+			System.out.println("FUNCTION::LISTOUT::FAIL::Invalid mode usage. Available mode: \"file\" or \"folder\".");
+		}
+
+	} catch(Exception ex) {
+		System.out.println("EXCEPTION::LISTOUT::" + ex);
+		
+	}
+	
+	return myList;
 }
 
-
-
+}
